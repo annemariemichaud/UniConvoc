@@ -2,6 +2,9 @@
 import PyPDF2
 import re
 import os
+import Tkinter
+import tkMessageBox
+
 #ouverture du fichier pdf contenant toutes les convocations concaténées à la suite les unes des autres
 #le nom par défaut est om.pdf (généré automatiquemnt par GAIA)
 pdfOMFile = open('om.pdf', 'rb')
@@ -49,9 +52,22 @@ for pageNum in range(pdfOMReader.numPages):
     if result:
     #le nom du fichier est OMNumeroPage_Mme_NOM_PRENOM ou OM_M_Nom_PRENOM
         name_new_file = 'OM' + str(pageNum+1) + '_' + result.group(0).replace('\n-\n','_').replace('.','')+ '.pdf'
-    pdfOutputFile = open(nom_repertoire + '/' + name_new_file, 'wb')
-    pdfWriter.write(pdfOutputFile)
-    pdfOutputFile.close()
+        pdfOutputFile = open(nom_repertoire + '/' + name_new_file, 'wb')
+        pdfWriter.write(pdfOutputFile)
+        pdfOutputFile.close()
+
+#test nombre de fichier créés = nombre de pages
+nombre_fichiers_pdf = 0
+for path, subdirs,files in os.walk(nom_repertoire):
+    for name in files:
+        if name.find('.pdf'):
+            nombre_fichiers_pdf = nombre_fichiers_pdf + 1
+if nombre_fichiers_pdf!=pdfOMReader.numPages:
+    top = Tkinter.Tk()
+    #centrer le message d'erreur sur l'écran
+    top.eval('tk::PlaceWindow %s center' % top.winfo_pathname(top.winfo_id()))
+    tkMessageBox.showinfo("ALERTE", "Le nombre de pages ne correspond pas aux nombres de fichiers PDF")
+    top.mainloop()
 
 pdfOMFile.close()
 
