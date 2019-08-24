@@ -36,7 +36,7 @@ nom_repertoire = dispositif + '_' + module + '_' + groupe
 
 try:
     os.mkdir(nom_repertoire)
-except FileExistsError:
+except OSError:
     print("Le répertoire  " , nom_repertoire ,  " existe déjà...") 
 
 #création des fichiers PDF à une seule page
