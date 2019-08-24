@@ -13,8 +13,10 @@ def afficher_message_erreur(message):
     top.mainloop()
 
 #ouverture du fichier pdf contenant toutes les convocations concaténées à la suite les unes des autres
-#le nom par défaut est om.pdf (généré automatiquemnt par GAIA)
-pdfOMFile = open('om_essai.pdf', 'rb')
+for path, subdirs,files in os.walk('.'):
+    for name in files:
+        if name.find('.pdf')!=-1:
+            pdfOMFile = open(name, 'rb')
 pdfOMReader = PyPDF2.PdfFileReader(pdfOMFile)
 
 #extraction du numéro de dispositif, module et groupe
@@ -71,7 +73,7 @@ for pageNum in range(pdfOMReader.numPages):
 nombre_fichiers_pdf = 0
 for path, subdirs,files in os.walk(nom_repertoire):
     for name in files:
-        if name.find('.pdf'):
+        if name.find('.pdf')!=-1:
             nombre_fichiers_pdf = nombre_fichiers_pdf + 1
 if nombre_fichiers_pdf!=pdfOMReader.numPages:
     afficher_message_erreur("Le nombre de pages ne correspond pas aux nombres de fichiers PDF")
