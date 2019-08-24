@@ -5,9 +5,16 @@ import os
 import Tkinter
 import tkMessageBox
 
+def afficher_message_erreur(message):
+    top = Tkinter.Tk()
+    #centrer le message d'erreur sur l'écran
+    top.eval('tk::PlaceWindow %s center' % top.winfo_pathname(top.winfo_id()))
+    tkMessageBox.showinfo("ALERTE", message)
+    top.mainloop()
+
 #ouverture du fichier pdf contenant toutes les convocations concaténées à la suite les unes des autres
 #le nom par défaut est om.pdf (généré automatiquemnt par GAIA)
-pdfOMFile = open('om.pdf', 'rb')
+pdfOMFile = open('om_essai.pdf', 'rb')
 pdfOMReader = PyPDF2.PdfFileReader(pdfOMFile)
 
 #extraction du numéro de dispositif, module et groupe
@@ -37,7 +44,10 @@ nom_repertoire = dispositif + '_' + module + '_' + groupe
 try:
     os.mkdir(nom_repertoire)
 except OSError:
-    print("Le répertoire  " , nom_repertoire ,  " existe déjà...") 
+    afficher_message_erreur("Le répertoire des fichiers PDF existe déjà")
+
+ #création d'un compteur pour le cas ou nbre de pages > nbre de convocations
+compteur = 0
 
 #création des fichiers PDF à une seule page
 for pageNum in range(pdfOMReader.numPages):
@@ -51,7 +61,8 @@ for pageNum in range(pdfOMReader.numPages):
     result = re.search(regexp, contenu_page)
     if result:
     #le nom du fichier est OMNumeroPage_Mme_NOM_PRENOM ou OM_M_Nom_PRENOM
-        name_new_file = 'OM' + str(pageNum+1) + '_' + result.group(0).replace('\n-\n','_').replace('.','')+ '.pdf'
+        compteur = compteur + 1
+        name_new_file = 'OM' + str(compteur) + '_' + result.group(0).replace('\n-\n','_').replace('.','')+ '.pdf'
         pdfOutputFile = open(nom_repertoire + '/' + name_new_file, 'wb')
         pdfWriter.write(pdfOutputFile)
         pdfOutputFile.close()
@@ -63,11 +74,7 @@ for path, subdirs,files in os.walk(nom_repertoire):
         if name.find('.pdf'):
             nombre_fichiers_pdf = nombre_fichiers_pdf + 1
 if nombre_fichiers_pdf!=pdfOMReader.numPages:
-    top = Tkinter.Tk()
-    #centrer le message d'erreur sur l'écran
-    top.eval('tk::PlaceWindow %s center' % top.winfo_pathname(top.winfo_id()))
-    tkMessageBox.showinfo("ALERTE", "Le nombre de pages ne correspond pas aux nombres de fichiers PDF")
-    top.mainloop()
+    afficher_message_erreur("Le nombre de pages ne correspond pas aux nombres de fichiers PDF")
 
 pdfOMFile.close()
 
