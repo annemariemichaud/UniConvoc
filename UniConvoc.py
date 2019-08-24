@@ -18,8 +18,8 @@ for pageNum in range(pdfOMReader.numPages):
     regexp='(Mme|M.)\\n-\\n[A-Z\-]*\\n-\\n[A-Z\-]*'
     result = re.search(regexp, contenu_page)
     if result:
-    #le nom du fichier est OM_Mme_NOM_PRENOM ou OM_M_Nom_PRENOM
-        name_new_file = 'OM' + '_' + result.group(0).replace('\n-\n','_').replace('.','')+ '.pdf'
+    #le nom du fichier est OMNumeroPage_Mme_NOM_PRENOM ou OM_M_Nom_PRENOM
+        name_new_file = 'OM' + str(pageNum+1) + '_' + result.group(0).replace('\n-\n','_').replace('.','')+ '.pdf'
     pdfOutputFile = open(name_new_file, 'wb')
     pdfWriter.write(pdfOutputFile)
     pdfOutputFile.close()
