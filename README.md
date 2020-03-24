@@ -18,6 +18,6 @@ Les nouveaux fichiers sont nommés selon le modèle suivant : OMn°ordre_NOM_PRE
 * chaque convocation doit tenir sur une seule page.
 * il faut renommer le répertoire des convocations (en ajoutant la date par exemple) si on veut traiter un autre groupe de convocations pour le même dispositif, même module et même groupe avec des dates différentes.
 
-##Licence
+## Licence
 
 Le programme est fourni sous la licence GPL v3.
