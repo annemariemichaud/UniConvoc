@@ -23,7 +23,7 @@ def trouver_nom_stage(pdfOMreader):
     if result_dispositif:
         dispositif = result_dispositif.group(0).replace('Dispositif:','')
     else:
-        dipositif = 'inconnu'
+        dispositif = 'inconnu'
     result_module = re.search(regExpModule, contenu_premiere_page)
     if result_module:
         module = result_module.group(0).replace('Module:','')
