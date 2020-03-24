@@ -9,6 +9,7 @@ def afficher_message_erreur(message):
     top = Tkinter.Tk()
     #centrer le message d'erreur sur l'écran
     top.eval('tk::PlaceWindow %s center' % top.winfo_pathname(top.winfo_id()))
+    #afficher la fenêtre d'erreur
     tkMessageBox.showinfo("ALERTE", message)
     top.mainloop()
 
@@ -83,9 +84,6 @@ def creation_fichiers_pdf(pdfOMReader,nom_repertoire):
 #initialisation de la liste des fichiers PDF
 liste_fichiers_pdf = []
 #ouverture du fichier pdf contenant toutes les convocations concaténées à la suite les unes des autres
-#for path, subdirs,files in os.walk('.'):
-    #for subdir in subdirs:
-    #    print(subdir)
 files = os.listdir('.')
 for name in files:
     if name.find('.pdf')!=-1:
